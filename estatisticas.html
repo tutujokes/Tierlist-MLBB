@@ -1,42 +1,39 @@
-// js/estatisticas.js
-
-// Função para renderizar a tabela de histórico do herói
-function renderTabelaHistorico(dias) {
-  const tbody = document.querySelector('#tabela-estatisticas tbody');
-  tbody.innerHTML = '';
-
-  if (!Array.isArray(dias)) {
-    tbody.innerHTML = '<tr><td colspan="4">Erro ao carregar dados</td></tr>';
-    return;
-  }
-
-  dias.forEach((dia) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${dia.date}</td>
-      <td>${(dia.win_rate * 100).toFixed(2)}%</td>
-      <td>${(dia.app_rate * 100).toFixed(2)}%</td>
-      <td>${(dia.ban_rate * 100).toFixed(2)}%</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// Buscar histórico de um herói específico e montar a tabela
-const main_heroid = 127; // ID do herói; altere se quiser outro herói
-const pastDays = 15; // Pode ser 7, 15 ou 30
-const url = `https://mlbb-stats.ridwaanhall.com/api/hero-rate/${main_heroid}/?past-days=${pastDays}`;
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    // console.log(data); // Descomente para ver o formato
-    if (
-      data &&
-      data.data &&
-      Array.isArray(data.data.records) &&
-      data.data.records.length > 0
-    ) {
-      const registro = data.data.records[0];
-      if (registro.data && Array*
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estatísticas de Heróis – MLBB</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header>
+    <h1>Estatísticas dos Heróis</h1>
+    <nav>
+      <a href="index.html">Tier List</a>
+      <a href="estatisticas.html" class="active">Estatísticas</a>
+      <a href="herois.html">Heróis</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <table id="tabela-estatisticas">
+        <thead>
+          <tr>
+            <th data-key="name">Nome</th>
+            <th data-key="win_rate">Win Rate</th>
+            <th data-key="pick_rate">Pick Rate</th>
+            <th data-key="ban_rate">Ban Rate</th>
+            <th data-key="matches">Partidas</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+  <footer>
+    <p>Fonte de dados: <a href="https://mlbb-stats.ridwaanhall.com/api" target="_blank" rel="noopener">api-mobilelegends</a></p>
+  </footer>
+  <script src="js/estatisticas.js"></script>
+</body>
+</html>
