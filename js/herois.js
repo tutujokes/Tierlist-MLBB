@@ -1,4 +1,4 @@
-const API_URL = "https://mlbb-stats.ridwaanhall.com/api/hero-list/";
+const API_URL = "https://mlbb-proxy.vercel.app/api/hero-list/";
 
 function criarCardHeroi(hero) {
   const card = document.createElement('div');
