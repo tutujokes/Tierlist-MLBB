@@ -1,24 +1,30 @@
-export default async function handler(req, res) {
-  // Libera CORS para qualquer origem
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // Trata requisição OPTIONS (pré-flight)
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  try {
-    const apiUrl = 'https://mlbb-stats.ridwaanhall.com/api/hero-list/';
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      return res.status(response.status).json({ error: 'Erro ao buscar lista de heróis', apiUrl });
-    }
-    const data = await response.json();
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json({ error: 'Erro no servidor proxy', details: error.message });
-  }
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Herói – MLBB</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header>
+    <h1>Detalhes do Herói</h1>
+    <nav>
+      <a href="index.html">Tier List</a>
+      <a href="estatisticas.html">Estatísticas</a>
+      <a href="herois.html">Heróis</a>
+    </nav>
+  </header>
+  <main>
+    <section id="detalhes-heroi"></section>
+    <section id="historico-heroi"></section>
+    <section id="sinergias-heroi"></section>
+    <section id="compatibilidade-heroi"></section>
+  </main>
+  <footer>
+    <p>Fonte de dados: <a href="https://mlbb-stats.ridwaanhall.com/api" target="_blank" rel="noopener">api-mobilelegends</a></p>
+  </footer>
+  <script src="js/getHeroIdByName.js" type="module"></script>
+  <script src="js/heroi.js" type="module"></script>
+</body>
+</html>
