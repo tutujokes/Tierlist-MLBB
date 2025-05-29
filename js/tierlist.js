@@ -1,6 +1,5 @@
 // Carrega Tier List da API (por WinRate) e organiza em SS, S, A
-const API_URL = "https://mlbb-stats.ridwaanhall.com/api/hero-rank/?sort_field=win_rate&sort_order=desc&rank=Mythic&days=7&size=130";
-
+const API_URL = "https://mlbb-proxy-tutujokes.vercel.app/api/heroes?sort_field=win_rate&sort_order=desc&rank=Mythic&days=7&size=130";
 function criarCardHeroi(hero, winRate) {
   // Linka para a página do herói
   const card = document.createElement('div');
