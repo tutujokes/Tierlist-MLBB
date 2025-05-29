@@ -1,61 +1,38 @@
-const API_URL = "https://mlbb-proxy.vercel.app/api/hero-rank/?sort_field=win_rate&sort_order=desc&rank=Mythic&days=7&size=130";
-let estatisticasCache = [];
-let ordemAtual = { key: 'win_rate', asc: false };
+async function carregarEstatisticas() {
+  const tabela = document.getElementById('tabela-estatisticas').querySelector('tbody');
+  tabela.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
 
-function renderTabela(dados) {
-  const tbody = document.querySelector('#tabela-estatisticas tbody');
-  tbody.innerHTML = '';
-  dados.forEach(entry => {
-    const hero = entry.hero;
-    tbody.innerHTML += `
-      <tr>
-        <td><a href="heroi.html?name=${encodeURIComponent(hero.name)}">${hero.name}</a></td>
-        <td>${(entry.win_rate * 100).toFixed(1)}%</td>
-        <td>${(entry.pick_rate * 100).toFixed(1)}%</td>
-        <td>${(entry.ban_rate * 100).toFixed(1)}%</td>
-        <td>${entry.matches}</td>
-      </tr>
-    `;
-  });
-}
-
-function ordenarTabela(key) {
-  if (ordemAtual.key === key) ordemAtual.asc = !ordemAtual.asc;
-  else ordemAtual = { key, asc: true };
-
-  const sorted = [...estatisticasCache].sort((a, b) => {
-    let valA = key === 'name' ? a.hero.name : a[key];
-    let valB = key === 'name' ? b.hero.name : b[key];
-
-    // String sort
-    if (typeof valA === 'string') valA = valA.toLowerCase();
-    if (typeof valB === 'string') valB = valB.toLowerCase();
-
-    if (valA > valB) return ordemAtual.asc ? 1 : -1;
-    if (valA < valB) return ordemAtual.asc ? -1 : 1;
-    return 0;
-  });
-
-  // Atualiza headers
-  document.querySelectorAll('#tabela-estatisticas th').forEach(th => {
-    th.classList.remove('sorted-asc', 'sorted-desc');
-    if (th.getAttribute('data-key') === key) {
-      th.classList.add(ordemAtual.asc ? 'sorted-asc' : 'sorted-desc');
+  try {
+    const res = await fetch('https://mlbb-proxy.vercel.app/api/heroes?source=rank&days=7&rank=mythic&size=999');
+    const json = await res.json();
+    const records = json.data?.records || [];
+    if (!records.length) {
+      tabela.innerHTML = '<tr><td colspan="5">Nenhum dado encontrado.</td></tr>';
+      return;
     }
-  });
 
-  renderTabela(sorted);
+    tabela.innerHTML = '';
+    records.forEach(record => {
+      const d = record.data;
+      const nome = d.main_hero?.data?.name || '-';
+      const winRate = isFinite(+d.main_hero_win_rate) ? ((+d.main_hero_win_rate) * 100).toFixed(2) + '%' : '-';
+      const pickRate = isFinite(+d.main_hero_appearance_rate) ? ((+d.main_hero_appearance_rate) * 100).toFixed(2) + '%' : '-';
+      const banRate = isFinite(+d.main_hero_ban_rate) ? ((+d.main_hero_ban_rate) * 100).toFixed(2) + '%' : '-';
+      const matches = d.main_hero_matches !== undefined && d.main_hero_matches !== null ? d.main_hero_matches : '-';
+
+      tabela.innerHTML += `
+        <tr>
+          <td>${nome}</td>
+          <td>${winRate}</td>
+          <td>${pickRate}</td>
+          <td>${banRate}</td>
+          <td>${matches}</td>
+        </tr>
+      `;
+    });
+  } catch (e) {
+    tabela.innerHTML = '<tr><td colspan="5">Erro ao carregar estatísticas.</td></tr>';
+  }
 }
 
-fetch(API_URL)
-  .then(res => res.json())
-  .then(json => {
-    estatisticasCache = json.data || [];
-    renderTabela(estatisticasCache);
-  });
-
-document.querySelectorAll('#tabela-estatisticas th').forEach(th => {
-  th.addEventListener('click', () => {
-    ordenarTabela(th.getAttribute('data-key'));
-  });
-});
+carregarEstatisticas();
