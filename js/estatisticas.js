@@ -1,4 +1,4 @@
-const API_URL = "https://mlbb-stats.ridwaanhall.com/api/hero-rank/?sort_field=win_rate&sort_order=desc&rank=Mythic&days=7&size=130";
+const API_URL = "https://mlbb-proxy.vercel.app/api/hero-rank/?sort_field=win_rate&sort_order=desc&rank=Mythic&days=7&size=130";
 let estatisticasCache = [];
 let ordemAtual = { key: 'win_rate', asc: false };
 
