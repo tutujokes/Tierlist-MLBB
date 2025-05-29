@@ -1,12 +1,11 @@
-// Carrega Tier List da API (por WinRate) e organiza em SS, S, A
 const API_URL = "https://mlbb-proxy.vercel.app/api/heroes?sort_field=win_rate&sort_order=desc&size=130";
+
 function criarCardHeroi(hero, winRate) {
-  // Linka para a página do herói
   const card = document.createElement('div');
   card.className = "card-hero";
   card.innerHTML = `
     <a href="heroi.html?name=${encodeURIComponent(hero.name)}">
-      <img src="${hero.icon}" alt="${hero.name}">
+      <img src="${hero.head}" alt="${hero.name}">
       <div>${hero.name}</div>
       <small>${winRate}% WR</small>
     </a>
@@ -17,15 +16,16 @@ function criarCardHeroi(hero, winRate) {
 fetch(API_URL)
   .then(res => res.json())
   .then(json => {
-    const dados = json.data || [];
+    // Ajuste aqui para pegar os records
+    const records = json.data && json.data.records ? json.data.records : [];
     // Limpa containers
     document.getElementById('tier-ss').innerHTML = '';
     document.getElementById('tier-s').innerHTML = '';
     document.getElementById('tier-a').innerHTML = '';
     // Classificação por winrate
-    dados.forEach(entry => {
-      const hero = entry.hero;
-      const win = (entry.win_rate * 100).toFixed(1);
+    records.forEach(entry => {
+      const hero = entry.data.main_hero.data;
+      const win = (entry.main_hero_win_rate * 100).toFixed(1);
       let tier = '';
       if (win >= 54) tier = 'tier-ss';
       else if (win >= 51) tier = 'tier-s';
