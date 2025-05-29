@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estatísticas de Heróis – MLBB</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header>
+    <h1>Estatísticas dos Heróis</h1>
+    <nav>
+      <a href="index.html">Tier List</a>
+      <a href="estatisticas.html" class="active">Estatísticas</a>
+      <a href="herois.html">Heróis</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <table id="tabela-estatisticas">
+        <thead>
+          <tr>
+            <th data-key="name">Nome</th>
+            <th data-key="win_rate">Win Rate</th>
+            <th data-key="pick_rate">Pick Rate</th>
+            <th data-key="ban_rate">Ban Rate</th>
+            <th data-key="matches">Partidas</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+  <footer>
+    <p>Fonte de dados: <a href="https://mlbb-stats.ridwaanhall.com/api" target="_blank" rel="noopener">api-mobilelegends</a></p>
+  </footer>
+  <script src="js/estatisticas.js"></script>
+</body>
+</html>
