@@ -16,24 +16,33 @@ function criarCardHeroi(hero, winRate) {
 fetch(API_URL)
   .then(res => res.json())
   .then(json => {
-    // Ajuste aqui para pegar os records
-    const records = json.data && json.data.records ? json.data.records : [];
+    // Debug: veja no console a estrutura recebida
+    // console.log("JSON recebido:", json);
+
+    // Ajuste para records
+    const records = (json.data && Array.isArray(json.data.records)) ? json.data.records : [];
     // Limpa containers
     document.getElementById('tier-ss').innerHTML = '';
     document.getElementById('tier-s').innerHTML = '';
     document.getElementById('tier-a').innerHTML = '';
     // Classificação por winrate
     records.forEach(entry => {
-      const hero = entry.data.main_hero.data;
+      const hero = entry?.data?.main_hero?.data;
       const win = (entry.main_hero_win_rate * 100).toFixed(1);
+      if (!hero || !hero.name || !hero.head) return; // Pula se faltar campo
+
       let tier = '';
       if (win >= 54) tier = 'tier-ss';
       else if (win >= 51) tier = 'tier-s';
       else tier = 'tier-a';
+
       const card = criarCardHeroi(hero, win);
-      document.getElementById(tier).appendChild(card);
+      const container = document.getElementById(tier);
+      if (container) container.appendChild(card);
     });
   })
   .catch(() => {
     document.getElementById('tier-ss').innerHTML = '<p>Erro ao carregar dados da API.</p>';
+    document.getElementById('tier-s').innerHTML = '';
+    document.getElementById('tier-a').innerHTML = '';
   });
