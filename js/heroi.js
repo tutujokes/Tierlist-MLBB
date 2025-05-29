@@ -6,7 +6,7 @@ function getParamNome() {
 function carregaDetalhes(nome) {
   document.getElementById('detalhes-heroi').innerHTML = '<p>Carregando...</p>';
 
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-detail/?name=${encodeURIComponent(nome)}`)
+  fetch(`https://mlbb-proxy.vercel.app/api/hero-detail/?name=${encodeURIComponent(nome)}`)
     .then(res => res.json())
     .then(json => {
       const d = json.data;
@@ -25,7 +25,7 @@ function carregaDetalhes(nome) {
 }
 
 function carregaCombos(nome) {
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-combo/?name=${encodeURIComponent(nome)}`)
+  fetch(`https://mlbb-proxy.vercel.app/api/hero-combo/?name=${encodeURIComponent(nome)}`)
     .then(res => res.json())
     .then(json => {
       const combos = json.data || [];
@@ -43,7 +43,7 @@ function carregaCombos(nome) {
 }
 
 function carregaCounters(nome) {
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-counter/?name=${encodeURIComponent(nome)}`)
+  fetch(`https://mlbb-proxy.vercel.app/api/hero-counter/?name=${encodeURIComponent(nome)}`)
     .then(res => res.json())
     .then(json => {
       const counters = json.data || [];
@@ -61,7 +61,7 @@ function carregaCounters(nome) {
 }
 
 function carregaSkins(nome) {
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-skin/?name=${encodeURIComponent(nome)}`)
+  fetch(`https://mlbb-proxy.vercel.app/api/hero-skin/?name=${encodeURIComponent(nome)}`)
     .then(res => res.json())
     .then(json => {
       const skins = json.data || [];
